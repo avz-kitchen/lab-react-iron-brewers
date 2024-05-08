@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import beersJSON from "./../assets/beers.json";
-
-
+import axios from "axios";
+import { API_URL } from "../utils/constant";
 function RandomBeersPage() {
   // Mock initial state, to be replaced by data from the Beers API. Store the beer info retrieved from the Beers API in this state variable.
   const [randomBeer, setRandomBeer] = useState(beersJSON[0]);
@@ -16,6 +16,21 @@ function RandomBeersPage() {
   // 1. Set up an effect hook to make a request for a random beer from the Beers API.
   // 2. Use axios to make a HTTP request.
   // 3. Use the response data from the Beers API to update the state variable.
+  useEffect(() => {
+    const getRandomBeer = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/random`);
+        setRandomBeer(response.data);
+      } catch (error) {
+        console.log('Error fetching beer:', error);
+      }
+    };
+
+    getRandomBeer();
+
+    return () => {
+    };
+  }, []);
 
 
 
